@@ -1,0 +1,53 @@
+* {
+    margin: 0;
+    padding: 0;
+}
+
+html, body, #app, .wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    /*background-color:#E6E8EA;*/
+}
+
+body {
+    font-family: "Helvetica Neue", Helvetica, "microsoft yahei", arial, STHeiTi, sans-serif;
+}
+
+a {
+    text-decoration: none
+}
+
+/*-------------------------右边内容开始-----------------*/
+.content {
+    background: none repeat scroll 0 0 #fff;
+    position: absolute;
+    right: 0;
+    top: 50px;
+    bottom: 0;
+    width: auto;
+    padding: 15px;
+    box-sizing: border-box;
+    overflow-y: scroll;
+}
+
+/*内容动态切换效果*/
+.move-enter-active, .move-leave-active {
+    transition: opacity .5s;
+}
+
+.move-enter, .move-leave {
+    opacity: 0;
+}
+
+/*-------------------------右边内容结束-----------------*/
+/*表格工具栏背景色*/
+.toolbar {
+    background-color: #f2f2f2;
+    padding: 10px;
+    margin: 10px 0;
+}
+
+.toolbar .el-form-item {
+    margin-bottom: 10px;
+}
