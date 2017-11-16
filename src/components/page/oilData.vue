@@ -69,7 +69,10 @@
             ])
         },
         mounted(){
-            this.getList();
+            this.Timer();
+        },
+        destroyed () {
+            clearInterval(this.timeout)//在离开本页之后，清除定时器
         },
         methods: {
             //获得表格数据
@@ -89,6 +92,13 @@
                     .catch((err) => {
                         this.listLoading = false;
                     })
+            },
+            //            定时器函数
+            Timer(){
+                this.getList();
+                this.timeout=setInterval(() => {
+                    this.getList();
+                },2000)
             },
             //            改变每页条数
             handleSizeChange(val) {

@@ -51,7 +51,7 @@ const user = {
             return new Promise((resolve, reject) => {
                 getUserInfo(state.token).then(response => {
                     const data = response.data.userBeans
-                    commit('SET_ROLES', data.roleSet)
+                    commit('SET_ROLES', data.roleSet[0].name)
                     commit('SET_UID', data.id)
                     commit('SET_USERNAME', data.username)
                     resolve(response)
@@ -94,7 +94,7 @@ const user = {
                 setCookie('token', role,expireDays);
                 getUserInfo(role).then(response => {
                     const data = response.data.userBeans
-                    commit('SET_ROLES', data.roleSet)
+                    commit('SET_ROLES',data.roleSet[0].name)
                     commit('SET_UID', data.id)
                     commit('SET_USERNAME', data.username)
                     delCookie("token");

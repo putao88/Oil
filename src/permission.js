@@ -9,7 +9,7 @@ import { getCookie } from './util/auth' // 验权
 
 // permissiom judge
 function hasPermission(roles, permissionRoles) {
-    if (roles.indexOf('admin') >= 0) return true // admin权限 直接通过
+    if (roles.indexOf('superadmin') >= 0) return true // superadmin权限 直接通过
     if (!permissionRoles) return true
     return roles.some(role => permissionRoles.indexOf(role) >= 0)
 }
@@ -26,8 +26,8 @@ router.beforeEach((to, from, next) => {
             if (store.getters.uid.length === 0) { // 判断当前用户是否已拉取完user_info信息
                 store.dispatch('GetUserInfo').then(res => { // 拉取user_info
                     const uid = res.data.userBeans.id;
-                    // const roles=res.data.userBeans.roleSet;
-                    const roles=['admin'];
+                    const roles=[res.data.userBeans.roleSet[0].name];
+                    // const roles=['admin'];
                     store.dispatch('GenerateRoutes', { roles }).then(() => { // 生成可访问的路由表
                         router.addRoutes(store.getters.addRouters) // 动态添加可访问路由表
                         next(to.path);// hack方法 确保addRoutes已完成

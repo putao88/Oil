@@ -135,7 +135,7 @@ export const asyncRouterMap =[
         iconCls: 'el-icon-oil-jiayouzhan',
         leaf: true,//只有一个节点
         children: [
-            { path: '/station', component: station, name: '加油站管理' }
+            { path: '/station', component: station, name: '加油站管理'}
         ]
     },
     {
@@ -146,7 +146,7 @@ export const asyncRouterMap =[
         meta: { role: ['admin'] },//用户角色权限
         leaf: true,//只有一个节点
         children: [
-            { path: '/user', component: user, name: '用户管理', meta: { role: ['admin'] },}
+            { path: '/user', component: user, name: '用户管理', meta: { role: ['superadmin'] }}
         ]
     },
     // {

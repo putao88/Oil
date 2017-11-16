@@ -70,7 +70,7 @@
                 <el-col :span="16">
                     <div class="divRight">
                         <div class="title">
-                            <span class="titleSpan">变化曲线图</span>
+                            <span class="titleSpan">变化柱状图</span>
                         </div>
                         
                         <!--图表部分-->
@@ -190,6 +190,11 @@
                         }
                     },
                     legend: {
+                        x: 'center',
+                        top: '10',
+                        textStyle: {
+                            color: '#90979c'
+                        },
                         data: ['平均温度', '油位', '水位']
                     },
                     

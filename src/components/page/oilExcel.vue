@@ -88,6 +88,16 @@
                 total: null,//总的数据条数
                 sels: [],//列表选中行
                 tableData: [],//表格数据
+                allData:[],//所有数据
+                listQuery1: {//获取历史数据需要传的参数
+                    curPage: 0,
+                    pageSize: 0,
+                    gasId: "",//加油站id
+                    tid: "",//油罐id
+                    start: "",
+                    end: "",
+                    uid:""
+                },
             }
         },
         computed: {
@@ -123,6 +133,18 @@
                     })
                     .catch((err) => {
                         this.listLoading = false;
+                    })
+            },
+//            获取无分页的表格数据
+            getAllList(){
+                this.listQuery1.uid=this.uid;
+                Axios.get('selectHistories.do', {
+                    params: this.listQuery1,
+                })
+                    .then((res) => {
+                        if (res.code == 0) {
+                            this.allData = res.data.histories;
+                        }
                     })
             },
             //            改变每页条数
@@ -207,11 +229,12 @@
             },
 //            导出数据
             handleDownload(){
+                this.getAllList();
                 require.ensure([], () => {
                     const { export_json_to_excel } = require('vendor/Export2Excel')
                     const tHeader = ['加油站名称', '油罐名称', '平均温度(℃)', '水位(L)', '水位上限(L)','油位(L)','油位上限(L)','油位下限(L)','时间']
                     const filterVal = ['unitname', 'name', 'avgtemp', 'waterlevel', 'wateruplim','oillevel','oiluplim','oildownlim','time']
-                    const data = this.formatJson(filterVal, this.tableData)
+                    const data = this.formatJson(filterVal, this.allData)
                     export_json_to_excel(tHeader, data, '油罐数据')
                 })
             },
