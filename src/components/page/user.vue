@@ -119,6 +119,10 @@
                 <el-form-item label="真实姓名" prop="realname">
                     <el-input v-model="editForm.realname" auto-complete="off"></el-input>
                 </el-form-item>
+    
+                <el-form-item label="密码" prop="password">
+                    <el-input v-model="editForm.password" auto-complete="off"></el-input>
+                </el-form-item>
                 
                 <el-form-item label="性别" prop="sex">
                     <el-radio-group v-model="editForm.sex">
@@ -283,6 +287,10 @@
                     realname: [{required: true, message: '请输入真实姓名', trigger: 'blur'}],
                     unit: [{required: true, message: '请输入单位', trigger: 'blur'}],
                     phone: [{validator: filtPhone, trigger: 'blur'}],
+                    password:[
+                        {required: true, message: '请输入新密码', trigger: 'blur'},
+                        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+                    ],
                     email: [
                         {required: true, message: '请输入邮箱地址', trigger: 'blur'},
                         {type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur'}
@@ -293,6 +301,7 @@
                 editForm: {
                     username: '',
                     realname: '',
+                    password:'',
                     phone: '',
                     email: '',
                     address: '',
@@ -422,6 +431,7 @@
                             let data = {
                                 username: para.username,
                                 realname: para.realname,
+                                password:para.password,
                                 phone: para.phone,
                                 email: para.email,
                                 address: para.address,

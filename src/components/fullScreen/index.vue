@@ -16,17 +16,9 @@
                 </ul>
             </div>
             <h3 class="warnTitle">油罐报警信息</h3>
-            <div class="WarnMes">
+            <div class="WarnMes" @mouseover="Stop" @mouseout="Timer">
                 <div class="mesBg">
-                    <!--<div v-for="item in tableData">{{item}}</div>-->
-                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
-    
-                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
-    
-                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
-    
-                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
-
+                    <div v-for="item in tableData">{{item}}</div>
                 </div>
             </div>
         </div>
@@ -55,6 +47,9 @@
                     uid:""
                 },
                 tableData:[],//表格数据
+                timeout:'',//定时器
+                mesBgTop:'',//div的top值
+                mesBgHeight:''//div的高
             }
         },
         mounted(){
@@ -66,6 +61,9 @@
                 'uid'
             ])
         },
+        destroyed () {
+            clearInterval(this.timeout)//在离开本页之后，清除定时器
+        },
         methods:{
             //获得报警数据
             getList(){
@@ -74,14 +72,37 @@
                     params: this.listQuery,
                 })
                     .then((res) => {
+                    const sign=0;
                         if (res.code == 0) {
                             for(let i = 0; i < res.data.alarmers.length; i++){
                                 const arContent=res.data.alarmers[i].unitname+"   "+res.data.alarmers[i].comment+"   "+res.data.alarmers[i].time;
                                 this.tableData.push(arContent);
+                               if(i==res.data.alarmers.length-1){
+                                   this.Timer();
+                               }
                             }
-                            
                         }
                     })
+            },
+//            报警数据滚动显示
+            Timer(){
+                this.timeout=setInterval(() => {
+                    this.DataScrol();
+                },50)
+            },
+//            数据滚动
+            DataScrol(){
+                const WarnMes=document.getElementsByClassName("WarnMes")[0];
+                const mesBg=document.getElementsByClassName("mesBg")[0];
+               if(WarnMes.scrollTop==mesBg.offsetHeight-383||(WarnMes.scrollTop>mesBg.offsetHeight-383)){
+                   WarnMes.scrollTop=0;
+               }else{
+                   WarnMes.scrollTop++;
+               }
+            },
+//            停止滚动
+            Stop(){
+                clearInterval(this.timeout);
             },
             //            获取下拉列表
             getSelect(){
@@ -141,6 +162,7 @@
     .fullWidth{
         width:100%;
         height:100%;
+        background-color:#fff;
         overflow: auto;
     }
     .fullbg{
@@ -175,7 +197,8 @@
         height:20px;
         line-height:20px;
         text-align:center;
-        color:#878BF7;
+        /*color:#878BF7;*/
+        color:#66a1f2;
     }
     /*无数据*/
     .noData{
@@ -204,11 +227,11 @@
     }
     .warnTitle{
         position:fixed;
-        right:140px;
+        right:160px;
         top:80px;
     }
     .WarnMes{
-        width:350px;
+        width:380px;
         height:400px;
         /*border:1px solid #878BF7;*/
         position:fixed;
@@ -218,15 +241,20 @@
         -webkit-box-shadow:0 0 3px 3px rgba(6,6,6,0.2);
         -moz-box-shadow:0 0 3px 3px rgba(6,6,6,0.2);
         z-index:100;
-        background-color:#fff;
+        background-color:#000;
+        overflow: scroll;
+        cursor:pointer;
     }
     .mesBg{
         padding:10px;
+        position:absolute;
+        left:0;
+        top:0;
     }
     .mesBg div{
-        font-size:14px;
-        color:#333;
-        margin-top:5px;
+        font-size:16px;
+        color:#fff;
+        margin-top:10px;
         word-break:break-all;
     }
 </style>
