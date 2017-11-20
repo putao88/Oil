@@ -24,12 +24,15 @@ import fullIndex from '../components/fullScreen/index.vue'
 // 油罐详情
 import tankDetail from '../components/fullScreen/tankDetail.vue'
 
+import srcolAnimate from '../components/subItem/srcolAnimate.vue'
+
 Vue.use(Router)//使用路由
 
 // 公用路由表
 export const constantRouterMap = [
     { path: '/login', component:login, hidden: true},
     { path: '/401', component:NoPower, hidden: true},
+    { path: '/srcolAnimate', component:srcolAnimate, hidden: true},
     {
         path: "/",
         component:Home,
@@ -62,6 +65,7 @@ export const constantRouterMap = [
 
 export default new Router({
     // mode: 'history', //后端支持可开
+    // base: '/oilTank/',  //添加的地方
     scrollBehavior: () => ({ y: 0 }),
     routes: constantRouterMap
 })

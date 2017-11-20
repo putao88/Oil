@@ -27,13 +27,13 @@
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" width="55" fixed></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
-            <el-table-column prop="unitname" label="加油站名称" align="center" width="120"></el-table-column>
-            <el-table-column prop="event" label="事件" align="center" width="140"></el-table-column>
-            <el-table-column prop="start" label="开始时间" align="center" width="170"></el-table-column>
-            <el-table-column prop="end" label="结束时间" align="center" width="170"></el-table-column>
-            <el-table-column prop="beforelevel" label="进/出油前油位(mm)" align="center" width="180"></el-table-column>
-            <el-table-column prop="afterlevel" label="进/出油后油位(mm)" align="center" width="180"></el-table-column>
-            <el-table-column prop="change" label="进出油总量(L)" align="center" width="160"></el-table-column>
+            <el-table-column prop="unitname" label="加油站名称" align="center" min-width="120"></el-table-column>
+            <el-table-column prop="event" label="事件" align="center" min-width="140"></el-table-column>
+            <el-table-column prop="start" label="开始时间" align="center" min-width="170"></el-table-column>
+            <el-table-column prop="end" label="结束时间" align="center" min-width="170"></el-table-column>
+            <el-table-column prop="beforelevel" label="进/出油前油位(mm)" align="center" min-width="180"></el-table-column>
+            <el-table-column prop="afterlevel" label="进/出油后油位(mm)" align="center" min-width="180"></el-table-column>
+            <el-table-column prop="change" label="进出油总量(L)" align="center" min-width="160"></el-table-column>
         </el-table>
         
         <!--分页工具条-->

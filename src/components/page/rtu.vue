@@ -22,7 +22,7 @@
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
             <el-table-column prop="rtuid" label="RTU编号" align="center"  sortable></el-table-column>
             <el-table-column prop="gas.unitname" label="所属加油站" align="center"></el-table-column>
-            <el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>
+            <!--<el-table-column prop="createTime" label="创建时间" align="center"></el-table-column>-->
         </el-table>
     
         <!--分页工具条-->

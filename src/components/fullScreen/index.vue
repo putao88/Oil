@@ -15,9 +15,24 @@
                     </li>
                 </ul>
             </div>
+            <h3 class="warnTitle">油罐报警信息</h3>
+            <div class="WarnMes">
+                <div class="mesBg">
+                    <!--<div v-for="item in tableData">{{item}}</div>-->
+                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
+    
+                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
+    
+                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
+    
+                    <div>fskjdfhdghdfgklfdgdsfljglfdkjglfkdjglkfjdgl;kdsfsdfdsfdsfdsfdsfddsfdfsdfdfdsfsd</div>
+
+                </div>
+            </div>
         </div>
-        <div v-show="options.length===0">
-            没有任何数据
+        <div v-show="options.length===0" class="noData">
+            <img src="../../custom/img/noData.png">
+            <span> 没有任何数据</span>
         </div>
     </div>
 </template>
@@ -31,10 +46,20 @@
         data(){
             return {
                 options: [],//联动数据
+                listQuery: {//获取表格数据需要传的参数
+                    gasId: "",
+                    curPage: 0,
+                    pageSize: 0,
+                    start: "",
+                    end: "",
+                    uid:""
+                },
+                tableData:[],//表格数据
             }
         },
         mounted(){
             this.getSelect();
+            this.getList();
         },
         computed: {
             ...mapGetters([
@@ -42,6 +67,22 @@
             ])
         },
         methods:{
+            //获得报警数据
+            getList(){
+                this.listQuery.uid=this.uid;
+                Axios.get('selectAlarmer.do', {
+                    params: this.listQuery,
+                })
+                    .then((res) => {
+                        if (res.code == 0) {
+                            for(let i = 0; i < res.data.alarmers.length; i++){
+                                const arContent=res.data.alarmers[i].unitname+"   "+res.data.alarmers[i].comment+"   "+res.data.alarmers[i].time;
+                                this.tableData.push(arContent);
+                            }
+                            
+                        }
+                    })
+            },
             //            获取下拉列表
             getSelect(){
                 Axios.get('selectUserHas.do', {
@@ -103,7 +144,7 @@
         overflow: auto;
     }
     .fullbg{
-        padding:30px;
+        padding:30px 350px 30px 30px;
         overflow:auto;
     }
     .title{
@@ -135,5 +176,57 @@
         line-height:20px;
         text-align:center;
         color:#878BF7;
+    }
+    /*无数据*/
+    .noData{
+        width:500px;
+        height:400px;
+        position:absolute;
+        left:0;
+        top:0;
+        right:0;
+        bottom:0;
+        margin:auto;
+    }
+    .noData img{
+        width:100%;
+        height:100%;
+    }
+    .noData span{
+        display:inline-block;
+        width:100%;
+        height:20px;
+        line-height:20px;
+        text-align:center;
+        margin-top:20px;
+        font-size:16px;
+        font-weight:bolder;
+    }
+    .warnTitle{
+        position:fixed;
+        right:140px;
+        top:80px;
+    }
+    .WarnMes{
+        width:350px;
+        height:400px;
+        /*border:1px solid #878BF7;*/
+        position:fixed;
+        right:20px;
+        top:120px;
+        box-shadow:0 0 3px 3px rgba(6,6,6,0.2);
+        -webkit-box-shadow:0 0 3px 3px rgba(6,6,6,0.2);
+        -moz-box-shadow:0 0 3px 3px rgba(6,6,6,0.2);
+        z-index:100;
+        background-color:#fff;
+    }
+    .mesBg{
+        padding:10px;
+    }
+    .mesBg div{
+        font-size:14px;
+        color:#333;
+        margin-top:5px;
+        word-break:break-all;
     }
 </style>

@@ -29,13 +29,13 @@
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" fixed width="55"></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
-            <el-table-column prop="unitname" label="所属加油站" align="center" width="120"></el-table-column>
-            <el-table-column prop="comment" label="报警描述" align="center" width="160"></el-table-column>
-            <el-table-column prop="event" label="报警事件" align="center" width="120"></el-table-column>
-            <el-table-column prop="type" label="报警类型" align="center" width="160"></el-table-column>
-            <el-table-column prop="current" label="当前值(mm)" align="center" sortable width="160"></el-table-column>
-            <el-table-column prop="limit" label="界限值(mm)" align="center" sortable width="160"></el-table-column>
-            <el-table-column prop="time" label="报警时间" align="center" sortable width="170"></el-table-column>
+            <el-table-column prop="unitname" label="所属加油站" align="center" min-width="120"></el-table-column>
+            <el-table-column prop="comment" label="报警描述" align="center" min-width="160"></el-table-column>
+            <el-table-column prop="event" label="报警事件" align="center" min-width="120"></el-table-column>
+            <el-table-column prop="type" label="报警类型" align="center" min-width="160"></el-table-column>
+            <el-table-column prop="current" label="当前值(mm)" align="center" sortable min-width="160"></el-table-column>
+            <el-table-column prop="limit" label="界限值(mm)" align="center" sortable min-width="160"></el-table-column>
+            <el-table-column prop="time" label="报警时间" align="center" sortable min-width="170"></el-table-column>
             <el-table-column prop="check" label="是否处理" width="140" align="center">
                 <template scope="scope">
                     <el-switch v-model="scope.row.check" on-text="no" off-text="yes"

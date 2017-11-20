@@ -16,6 +16,7 @@ import './permission' // 权限
 
 Vue.config.productionTip = false;
 Vue.use(ElementUI);//使用ElementUI
+Vue.config.debug = true;//开启debug模式
 // Vue.prototype.$axios = axios;//将axios扩展到Vue原型上，从而在vue内部可以用`this.$axios`访问axios。这样就可以避免在每一个vue组件中引入axios的麻烦。
 // axios.defaults.withCredentials = true;//withCredentials默认是false，意思就是不携带cookie信息
 // axios.defaults.baseURL = 'http://192.168.2.230:8080/GAS_New/'//每个请求的共用前缀，正式开发时删除掉

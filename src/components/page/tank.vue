@@ -9,17 +9,17 @@
                         <station-select @handleChangeChild="stationChange"></station-select>
                     </el-form-item>
                     
-                    <el-form-item>
-                        <el-date-picker
-                            v-model="allTime"
-                            type="datetimerange"
-                            range-separator=" 至 "
-                            start-placeholder="开始时间"
-                            end-placeholder="结束时间"
-                            placeholder="---请选择时间段---"
-                            @change="timeChange">
-                        </el-date-picker>
-                    </el-form-item>
+                    <!--<el-form-item>-->
+                        <!--<el-date-picker-->
+                            <!--v-model="allTime"-->
+                            <!--type="datetimerange"-->
+                            <!--range-separator=" 至 "-->
+                            <!--start-placeholder="开始时间"-->
+                            <!--end-placeholder="结束时间"-->
+                            <!--placeholder="-&#45;&#45;请选择时间段-&#45;&#45;"-->
+                            <!--@change="timeChange">-->
+                        <!--</el-date-picker>-->
+                    <!--</el-form-item>-->
                     
                     <el-form-item style="float:right;">
                     <el-button type="primary" @click="handleAdd" icon="plus">新增油罐</el-button>
@@ -29,18 +29,17 @@
         </el-row>
     
         <!--表格-->
-    
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" width="55"></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
-            <el-table-column prop="name" label="油罐名称" align="center"  width="120"></el-table-column>
-            <el-table-column prop="unitname" label="所属加油站" align="center" width="120"></el-table-column>
-            <el-table-column prop="rid" label="RTU编号" align="center" sortable width="120"></el-table-column>
-            <el-table-column prop="wateruplim" label="水位上限(mm)" align="center" sortable width="160"></el-table-column>
-            <el-table-column prop="oiluplim" label="油位上限(mm)" align="center" sortable width="160"></el-table-column>
-            <el-table-column prop="oildownlim" label="油位下限(mm)" align="center" sortable  width="160"></el-table-column>
-            <el-table-column prop="time" label="创建时间" align="center" sortable width="170"></el-table-column>
+            <el-table-column prop="name" label="油罐名称" align="center"  min-width="120"></el-table-column>
+            <el-table-column prop="unitname" label="所属加油站" align="center" min-width="120"></el-table-column>
+            <el-table-column prop="rid" label="RTU编号" align="center" sortable min-width="120"></el-table-column>
+            <el-table-column prop="wateruplim" label="水位上限(mm)" align="center" sortable min-width="160"></el-table-column>
+            <el-table-column prop="oiluplim" label="油位上限(mm)" align="center" sortable min-width="160"></el-table-column>
+            <el-table-column prop="oildownlim" label="油位下限(mm)" align="center" sortable  min-width="160"></el-table-column>
+            <el-table-column prop="time" label="时间" align="center" sortable min-width="170"></el-table-column>
         </el-table>
     
         <!--分页工具条-->
@@ -334,13 +333,13 @@
                                             message: '提交成功',
                                             type: 'success'
                                         });
-                                        this.$refs['editForm'].resetFields();
+                                        this.$refs['setForm'].resetFields();
                                         this.setFormVisible = false;
                                         this.getList();
                                     }
                                 })
                                 .catch((err) => {
-                                    this.editLoading = false;
+                                    this.setLoading = false;
                                 })
                         })
                     }

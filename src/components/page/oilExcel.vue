@@ -35,16 +35,16 @@
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" width="55"></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
-            <el-table-column prop="unitname" label="加油站名称" align="center" width="120"></el-table-column>
-            <el-table-column prop="name" label="油罐名称" align="center" width="100"></el-table-column>
-            <el-table-column prop="avgtemp" label="平均温度(℃)" align="center" sortable width="140"></el-table-column>
-            <el-table-column prop="waterlevel" label="水位(L)" align="center" sortable width="120"></el-table-column>
-            <el-table-column prop="wateruplim" label="水位上限(L)" align="center" sortable width="140"></el-table-column>
-            <el-table-column prop="oillevel" label="油位(mm)" align="center" sortable width="140"></el-table-column>
-            <el-table-column prop="oiluplim" label="油位上限(L)" align="center" sortable width="140"></el-table-column>
-            <el-table-column prop="oildownlim" label="油位下限(L)" align="center" sortable width="140"></el-table-column>
-            <el-table-column prop="time" label="时间" align="center" sortable width="180"></el-table-column>
-            <el-table-column label="操作" align="center" width="100">
+            <el-table-column prop="unitname" label="加油站名称" align="center" min-width="120"></el-table-column>
+            <el-table-column prop="name" label="油罐名称" align="center" min-width="100"></el-table-column>
+            <el-table-column prop="avgtemp" label="平均温度(℃)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="waterlevel" label="水位(L)" align="center" sortable min-width="120"></el-table-column>
+            <el-table-column prop="wateruplim" label="水位上限(L)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="oillevel" label="油位(mm)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="oiluplim" label="油位上限(L)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="oildownlim" label="油位下限(L)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="time" label="时间" align="center" sortable min-width="180"></el-table-column>
+            <el-table-column label="操作" align="center" min-width="100">
                 <template scope="scope">
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
                 </template>

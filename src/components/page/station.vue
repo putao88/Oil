@@ -51,13 +51,13 @@
                   element-loading-text="拼命加载中..." @selection-change="selsChange" style="width: 100%">
             <el-table-column type="selection" align="center" width="55"></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
-            <el-table-column prop="unitname" label="名称" align="center" sortable width="120"></el-table-column>
-            <el-table-column prop="principal" label="负责人" align="center" sortable width="100"></el-table-column>
-            <el-table-column prop="phone" label="联系电话" align="center" sortable width="130"></el-table-column>
-            <el-table-column prop="email" label="邮箱" align="center" sortable width="200"></el-table-column>
-            <el-table-column prop="createTime" label="创建时间" align="center" sortable width="180"></el-table-column>
-            <el-table-column prop="address" label="单位地址" align="center" sortable></el-table-column>
-            <el-table-column label="操作" align="center"  width="140">
+            <el-table-column prop="unitname" label="名称" align="center" sortable min-width="120"></el-table-column>
+            <el-table-column prop="principal" label="负责人" align="center" sortable min-width="100"></el-table-column>
+            <el-table-column prop="phone" label="联系电话" align="center" sortable min-width="130"></el-table-column>
+            <el-table-column prop="email" label="邮箱" align="center" sortable min-width="200"></el-table-column>
+            <el-table-column prop="createTime" label="创建时间" align="center" sortable min-width="180"></el-table-column>
+            <el-table-column prop="address" label="单位地址" align="center" sortable min-width="180"></el-table-column>
+            <el-table-column label="操作" align="center"  min-width="140">
                 <template scope="scope">
                     <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
                     <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>

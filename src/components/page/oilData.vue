@@ -18,14 +18,14 @@
                   element-loading-text="拼命加载中..." style="width: 100%">
             <el-table-column type="selection" align="center" width="55"></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
-            <el-table-column prop="name" label="油罐名称" align="center"  width="120"></el-table-column>
-            <el-table-column prop="unitname" label="所属加油站" align="center" width="120"></el-table-column>
-            <el-table-column prop="avgtemp" label="平均温度(℃)" align="center" sortable width="140"></el-table-column>
-            <el-table-column prop="waterlevel" label="水位(mm)" align="center" sortable width="150"></el-table-column>
-            <el-table-column prop="wateruplim" label="水位上限(mm)" align="center" sortable width="150"></el-table-column>
-            <el-table-column prop="oiluplim" label="油位上限(mm)" align="center" sortable width="150"></el-table-column>
-            <el-table-column prop="oillevel" label="油位(mm)" align="center" sortable width="150"></el-table-column>
-            <el-table-column prop="oildownlim" label="油位下限(mm)" align="center" sortable  width="150"></el-table-column>
+            <el-table-column prop="name" label="油罐名称" align="center"  min-width="120"></el-table-column>
+            <el-table-column prop="unitname" label="所属加油站" align="center" min-width="120"></el-table-column>
+            <el-table-column prop="avgtemp" label="平均温度(℃)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="waterlevel" label="水位(mm)" align="center" sortable min-width="150"></el-table-column>
+            <el-table-column prop="wateruplim" label="水位上限(mm)" align="center" sortable min-width="150"></el-table-column>
+            <el-table-column prop="oiluplim" label="油位上限(mm)" align="center" sortable min-width="150"></el-table-column>
+            <el-table-column prop="oillevel" label="油位(mm)" align="center" sortable min-width="150"></el-table-column>
+            <el-table-column prop="oildownlim" label="油位下限(mm)" align="center" sortable  min-width="150"></el-table-column>
         </el-table>
         
         <!--分页工具条-->
