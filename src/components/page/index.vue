@@ -11,18 +11,44 @@
 </template>
 
 <script>
+    import Axios from '../../util/fetch';
+    import { mapGetters } from 'vuex'
     export default {
         data: function () {
             return {
-                showAlert:true
+                showAlert:false,
+                listQuery: {//获取表格数据需要传的参数
+                    check: 0,
+                    curPage: 0,
+                    pageSize: 0,
+                    start: "",
+                    end: "",
+                    uid:""
+                }
             }
         },
         mounted(){
-            this.open();
+            this.getList();
+        },
+        computed: {
+            ...mapGetters([
+                'uid'
+            ])
         },
         methods: {
-            open(){
-            
+            //获得未处理报警数据
+            getList(){
+                this.listQuery.uid=this.uid;
+                Axios.get('selectAlarmer.do', {
+                    params: this.listQuery,
+                })
+                    .then((res) => {
+                        if (res.code == 0) {
+                          if(res.data.alarmers.length>0){
+                              this.showAlert=true;
+                          }
+                        }
+                    })
             },
             close(){
                 this.showAlert=false;

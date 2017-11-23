@@ -66,8 +66,7 @@
             },
             //          退出登录
             Logout: function () {
-                const self = this;
-                self.$confirm('确认退出吗？', '提示', {}).then(() => {
+                this.$confirm('确认退出吗？', '提示', {}).then(() => {
                     this.$store.dispatch('LogOut').then(() => {
                         location.reload()// 为了重新实例化vue-router对象 避免bug
                     })

@@ -220,6 +220,10 @@
                                         this.$refs['addForm'].resetFields();
                                         this.addFormVisible = false;
                                         this.getList();
+//                                        修改密码后退出登录
+                                        this.$store.dispatch('LogOut').then(() => {
+                                            location.reload()// 为了重新实例化vue-router对象 避免bug
+                                        })
                                     }
                                 })
                                 .catch((err) => {

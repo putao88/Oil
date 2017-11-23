@@ -6,7 +6,7 @@
                 <el-form :inline="true">
                     <!--油罐选择-->
                     <el-form-item>
-                        <mix-select @handleChangeChild="handleChange" :chang-selon="changSelon"></mix-select>
+                        <mix-select @handleChangeChild="handleChange" :chang-selon="changSelon" @initData="initCharts"></mix-select>
                     </el-form-item>
                     <!--时间选择-->
                     <el-form-item>
@@ -45,8 +45,6 @@
             return {
                 changSelon:false,//判断下拉子组件的选择是否可以任选层级
                 allTime: "",//时间段
-                options: [],//联动数据
-                opArray: ['', ''],//默认的加油站和油罐号码
                 listQuery: {//获取图表数据需要传的参数
                     curPage: 0,
                     pageSize: 0,
@@ -66,50 +64,22 @@
             ])
         },
         mounted(){
-            this.getSelect();
         },
         methods: {
-            //            获取下拉列表
-            getSelect(){
-                Axios.get('selectUserHas.do', {
-                    params: {
-                        uid: this.uid
-                    },
-                })
-                    .then((res) => {
-                        if (res.code == 0) {
-                            const gasList = res.data.userBeans.gasList;
-//                        获取一级下拉
-                            for (let i = 0; i < gasList.length; i++) {
-                                const data1 = {
-                                    value: gasList[i].id,
-                                    label: gasList[i].unitname,
-                                    children: []
-                                }
-                                this.options.push(data1);
-                                const rtuGasList = gasList[i].rtuGasList;
-                                const oilTankList = [];
-                                //                            获取二级下拉
-                                for (let x = 0; x < rtuGasList.length; x++) {
-                                    const data2 = rtuGasList[x].oilTankList;
-                                    for (let y = 0; y < data2.length; y++) {
-                                        const data3 = {
-                                            value: data2[y].id,
-                                            label: data2[y].name,
-                                        }
-                                        oilTankList.push(data3)
-                                    }
-                                }
-                                this.options[i].children=oilTankList;
-                            }
-                        }
-                    })
+//        初始化选择油罐
+            initCharts(value){
+                this.listQuery.gasId=value[0];
+                this.listQuery.tid=value[1];
+                this.getList()
+            
             },
 //            油罐选择变化时
             handleChange(value){
-                this.listQuery.gasId=value[0];
-                this.listQuery.tid=value[1];
-                this.getList();
+                if(value!=""){
+                    this.listQuery.gasId=value[0];
+                    this.listQuery.tid=value[1];
+                    this.getList();
+                }
             },
 //            时间段选择
             timeChange(){
@@ -123,53 +93,6 @@
                 } else {
                     this.getList();
                 }
-            },
-//            初始化时，表格数据
-            initChartsData(){
-                this.chartsData = [
-                    {
-                        time: "2017-09-06 14:21:52",
-                        waterlevel: 5,
-                        oillevel: 45.7,
-                        temperature: 45.5
-                    },
-                    {
-                        time: "2017-09-06 14:21:52",
-                        waterlevel: 9,
-                        oillevel: 47.8,
-                        temperature: 40
-                    },
-                    {
-                        time: "2017-09-06 14:21:52",
-                        waterlevel: 14,
-                        oillevel: 39,
-                        temperature: 50
-                    },
-                    {
-                        time: "2017-09-06 14:21:52",
-                        waterlevel: 11,
-                        oillevel: 47,
-                        temperature: 45.5
-                    },
-                    {
-                        time: "2017-09-06 14:21:52",
-                        waterlevel: 5,
-                        oillevel: 45,
-                        temperature: 40
-                    },
-                    {
-                        time: "2017-09-06 14:21:52",
-                        waterlevel: 5,
-                        oillevel: 43,
-                        temperature: 40
-                    },
-                    {
-                        time: "2017-09-06 14:21:52",
-                        waterlevel: 8,
-                        oillevel: 45,
-                        temperature: 46.5
-                    }
-                ];
             },
             //  获取油罐数据
             getList(){

@@ -6,7 +6,7 @@
                 <el-form :inline="true">
                     <!--油罐选择-->
                     <el-form-item>
-                        <mix-select @handleChangeChild="handleChange" :chang-selon="changSelon"></mix-select>
+                        <mix-select @handleChangeChild="handleChange" :chang-selon="changSelon" @initData="initTable"></mix-select>
                     </el-form-item>
                     <!--时间选择-->
                     <el-form-item>
@@ -106,9 +106,14 @@
             ])
         },
         mounted(){
-            this.getList();
         },
         methods: {
+//        初始化选择油罐
+            initTable(value){
+                this.listQuery.gasId=value[0];
+                this.listQuery.tid=value[1];
+                this.getList()
+            },
 //            下拉菜单改变时
             handleChange(value){
                 this.listQuery.gasId=value[0];

@@ -39,7 +39,7 @@
             return {
                 options: [],//联动数据
                 listQuery: {//获取表格数据需要传的参数
-                    gasId: "",
+                    check: "",
                     curPage: 0,
                     pageSize: 0,
                     start: "",

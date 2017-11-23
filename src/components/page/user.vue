@@ -121,7 +121,7 @@
                 </el-form-item>
     
                 <el-form-item label="密码" prop="password">
-                    <el-input v-model="editForm.password" auto-complete="off"></el-input>
+                    <el-input v-model="editForm.password" auto-complete="off" type="password"></el-input>
                 </el-form-item>
                 
                 <el-form-item label="性别" prop="sex">
@@ -288,8 +288,7 @@
                     unit: [{required: true, message: '请输入单位', trigger: 'blur'}],
                     phone: [{validator: filtPhone, trigger: 'blur'}],
                     password:[
-                        {required: true, message: '请输入新密码', trigger: 'blur'},
-                        { min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur' }
+                        {required: true, message: '请输入新密码', trigger: 'blur'}
                     ],
                     email: [
                         {required: true, message: '请输入邮箱地址', trigger: 'blur'},

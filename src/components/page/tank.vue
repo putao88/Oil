@@ -35,7 +35,7 @@
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
             <el-table-column prop="name" label="油罐名称" align="center"  min-width="120"></el-table-column>
             <el-table-column prop="unitname" label="所属加油站" align="center" min-width="120"></el-table-column>
-            <el-table-column prop="rid" label="RTU编号" align="center" sortable min-width="120"></el-table-column>
+            <el-table-column prop="rtuid" label="RTU编号" align="center" sortable min-width="120"></el-table-column>
             <el-table-column prop="wateruplim" label="水位上限(mm)" align="center" sortable min-width="160"></el-table-column>
             <el-table-column prop="oiluplim" label="油位上限(mm)" align="center" sortable min-width="160"></el-table-column>
             <el-table-column prop="oildownlim" label="油位下限(mm)" align="center" sortable  min-width="160"></el-table-column>
@@ -59,6 +59,12 @@
         <!-- -----------------------编辑界面-------------------->
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
             <el-form :model="editForm" label-width="120px" :inline="true" :rules="editFormRules" ref="editForm">
+                <el-form-item label="所属加油站" prop="unitname">
+                    <el-input v-model="editForm.unitname" :disabled=true></el-input>
+                </el-form-item>
+                <el-form-item label="rtu编号" prop="rtuid">
+                    <el-input v-model="editForm.rtuid" :disabled=true></el-input>
+                </el-form-item>
                 <el-form-item label="油罐名称" prop="name">
                     <el-input v-model="editForm.name"></el-input>
                 </el-form-item>
@@ -147,6 +153,30 @@
                     callback();
                 }
             };
+            var valueNum1=(rule, value, callback) =>{
+                if (this.editForm.oildownlim>this.editForm.oiluplim) {
+                    callback(new Error('油位下限必须小于油位上限'));
+                }
+                else{
+                    callback();
+                }
+            };
+            var valueNum2=(rule, value, callback) =>{
+                if (this.setForm.oildownlim>this.setForm.oiluplim) {
+                    callback(new Error('油位下限必须小于油位上限'));
+                }
+                else{
+                    callback();
+                }
+            };
+            var valueNum3=(rule, value, callback) =>{
+                if (this.addForm.oildownlim>this.addForm.oiluplim) {
+                    callback(new Error('油位下限必须小于油位上限'));
+                }
+                else{
+                    callback();
+                }
+            };
             return {
                 changSelon:false,//判断下拉子组件的选择是否可以任选层级
                 allTime: "",
@@ -167,14 +197,22 @@
                 editLoading: false,//编辑提交等待
                 editFormRules: {   //编辑框的输入格式判断
                     name: [{required: true, message: '请输入加油站名称', trigger: 'blur'}],
-                    oildownlim: [{validator:filtNum,trigger: 'blur'}],
-                    oiluplim: [{validator:filtNum,trigger: 'blur'}],
+                    oildownlim: [
+                        {validator:filtNum,trigger: 'blur'},
+                        {validator:valueNum1,trigger: 'blur'}
+                    ],
+                    oiluplim: [
+                        {validator:filtNum,trigger: 'blur'},
+                        {validator:valueNum1,trigger: 'blur'}
+                    ],
                     wateruplim: [{validator:filtNum,trigger: 'blur'}],
                 },
                 //编辑界面数据
                 editForm: {
                     ids: '',
                     name: '',
+                    rtuid:'',
+                    unitname:'',
                     oildownlim: '',
                     oiluplim: '',
                     wateruplim:''
@@ -184,8 +222,14 @@
                 setLoading: false,//设置提交等待
                 setFormRules: {   //设置框的输入格式判断
                     name: [{required: true, message: '请输入加油站名称', trigger: 'blur'}],
-                    oildownlim: [{validator:filtNum,trigger: 'blur'}],
-                    oiluplim: [{validator:filtNum,trigger: 'blur'}],
+                    oildownlim: [
+                        {validator:filtNum,trigger: 'blur'},
+                        {validator:valueNum2,trigger: 'blur'}
+                        ],
+                    oiluplim: [
+                        {validator:filtNum,trigger: 'blur'},
+                        {validator:valueNum2,trigger: 'blur'}
+                    ],
                     wateruplim: [{validator:filtNum,trigger: 'blur'}],
                 },
                 //设置界面数据
@@ -202,8 +246,14 @@
                 addFormRules: {   //新增框的输入格式判断
                     gidArray:[{type:'array',required: true, message: '请绑定RTU', trigger: 'change'}],
                     name: [{required: true, message: '请输入加油站名称', trigger: 'blur'}],
-                    oildownlim: [{validator:filtNum,trigger: 'blur'}],
-                    oiluplim: [{validator:filtNum,trigger: 'blur'}],
+                    oildownlim: [
+                        {validator:filtNum,trigger: 'blur'},
+                        {validator:valueNum3,trigger: 'blur'}
+                        ],
+                    oiluplim: [
+                        {validator:filtNum,trigger: 'blur'},
+                        {validator:valueNum3,trigger: 'blur'}
+                        ],
                     wateruplim: [{validator:filtNum,trigger: 'blur'}],
                 },
                 //新增界面数据
