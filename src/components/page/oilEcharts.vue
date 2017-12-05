@@ -107,7 +107,9 @@
                             const data = {
                                 time:histories[i].time ,
                                 waterlevel:histories[i].waterlevel ,
+                                watervol:histories[i].watervol,
                                 oillevel:histories[i].oillevel ,
+                                oilvol:histories[i].oilvol,
                                 temperature: histories[i].avgtemp
                             }
                             this.chartsData.push(data);

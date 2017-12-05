@@ -33,22 +33,21 @@
         
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
-            <el-table-column type="selection" align="center" width="55"></el-table-column>
+            <el-table-column type="selection" fixed align="center" width="55"></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
             <el-table-column prop="unitname" label="加油站名称" align="center" min-width="120"></el-table-column>
             <el-table-column prop="name" label="油罐名称" align="center" min-width="100"></el-table-column>
             <el-table-column prop="avgtemp" label="平均温度(℃)" align="center" sortable min-width="140"></el-table-column>
-            <el-table-column prop="waterlevel" label="水位(L)" align="center" sortable min-width="120"></el-table-column>
-            <el-table-column prop="wateruplim" label="水位上限(L)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="waterlevel" label="水位(mm)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="watervol" label="水容积(L)" align="center" min-width="120"></el-table-column>
             <el-table-column prop="oillevel" label="油位(mm)" align="center" sortable min-width="140"></el-table-column>
-            <el-table-column prop="oiluplim" label="油位上限(L)" align="center" sortable min-width="140"></el-table-column>
-            <el-table-column prop="oildownlim" label="油位下限(L)" align="center" sortable min-width="140"></el-table-column>
+            <el-table-column prop="oilvol" label="油容积(L)" align="center" min-width="120"></el-table-column>
             <el-table-column prop="time" label="时间" align="center" sortable min-width="180"></el-table-column>
-            <el-table-column label="操作" align="center" min-width="100">
-                <template scope="scope">
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
+            <!--<el-table-column label="操作" align="center" min-width="100">-->
+                <!--<template scope="scope">-->
+                    <!--<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </el-table>
         
         <!--分页工具条-->
@@ -237,7 +236,7 @@
                 this.getAllList();
                 require.ensure([], () => {
                     const { export_json_to_excel } = require('vendor/Export2Excel')
-                    const tHeader = ['加油站名称', '油罐名称', '平均温度(℃)', '水位(L)', '水位上限(L)','油位(L)','油位上限(L)','油位下限(L)','时间']
+                    const tHeader = ['加油站名称', '油罐名称', '平均温度(℃)', '水位(mm)', '水容积(L)','油位(mm)','油容积(L)','时间']
                     const filterVal = ['unitname', 'name', 'avgtemp', 'waterlevel', 'wateruplim','oillevel','oiluplim','oildownlim','time']
                     const data = this.formatJson(filterVal, this.allData)
                     export_json_to_excel(tHeader, data, '油罐数据')

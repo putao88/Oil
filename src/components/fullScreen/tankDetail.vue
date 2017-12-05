@@ -12,7 +12,7 @@
         <!--底下内容-->
         <div style="padding:20px;">
             <el-row>
-                <el-col :span="8">
+                <el-col :span="10">
                     <!--油罐图片-->
                     <div class="left1">
                         <div class="title">
@@ -46,29 +46,11 @@
                                 <td>{{tableData.oildownlim}}</td>
                             </tr>
                         </table>
-                        <table cellspacing="0">
-                            <tr>
-                                <td rowspan="3">实时数据</td>
-                                <td>水位</td>
-                                <td>油位</td>
-                                <td>平均温度</td>
-                            </tr>
-                            <tr>
-                                <td>mm</td>
-                                <td>mm</td>
-                                <td>℃</td>
-                            </tr>
-                            <tr>
-                                <td>{{tableData.waterlevel}}</td>
-                                <td>{{tableData.oillevel}}</td>
-                                <td>{{tableData.avgtemp}}</td>
-                            </tr>
-                        </table>
                     </div>
                 </el-col>
                 <!--折线图-->
-                <el-col :span="16">
-                    <div class="divRight">
+                <el-col :span="14">
+                    <div class="divRight1">
                         <div class="title">
                             <span class="titleSpan">变化柱状图</span>
                         </div>
@@ -84,6 +66,35 @@
                         <!--</div>-->
                         <!--</div>-->
                     
+                    </div>
+                    <div class="divRight2">
+                        <div class="title">
+                            <span class="titleSpan">实时测量数据</span>
+                        </div>
+                        <table cellspacing="0">
+                            <tr>
+                                <td rowspan="3">实时数据</td>
+                                <td>水位</td>
+                                <td>水容积</td>
+                                <td>油位</td>
+                                <td>油容积</td>
+                                <td>平均温度</td>
+                            </tr>
+                            <tr>
+                                <td>mm</td>
+                                <td>L</td>
+                                <td>mm</td>
+                                <td>L</td>
+                                <td>℃</td>
+                            </tr>
+                            <tr>
+                                <td>{{tableData.waterlevel}}</td>
+                                <td>{{tableData.watervol}}</td>
+                                <td>{{tableData.oillevel}}</td>
+                                <td>{{tableData.oilvol}}</td>
+                                <td>{{tableData.avgtemp}}</td>
+                            </tr>
+                        </table>
                     </div>
                 </el-col>
             </el-row>
@@ -183,8 +194,8 @@
                         borderWidth: 0,
                         top: 90,
                         bottom: 30,
-                        left: 50,
-                        right: 20,
+                        left: 80,
+                        right: 60,
                         textStyle: {
                             color: '#fff'
                         }
@@ -195,7 +206,7 @@
                         textStyle: {
                             color: '#90979c'
                         },
-                        data: ['平均温度', '油位', '水位']
+                        data: ['平均温度', '油位','油容积', '水位','水容积']
                     },
                     
                     calculable: true,
@@ -279,6 +290,28 @@
                             data:[res.data.ots[0].oillevel],
                         },
                         {
+                            name: '油容积',
+                            type: 'bar',
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(255,144,128,1)',
+                                    borderColor: 'rgba(137,189,2,0.27)',
+                                    borderWidth: 12,
+                                    label: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                        position: 'insideTop',
+                                        formatter(p) {
+                                            return p.value > 0 ? p.value : ''
+                                        }
+                                    }
+                                }
+                            },
+                            data:[res.data.ots[0].oilvol],
+                        },
+                        {
                             name: '水位',
                             type: 'bar',
                             itemStyle: {
@@ -299,6 +332,28 @@
                                 }
                             },
                             data: [res.data.ots[0].waterlevel],
+                        },
+                        {
+                            name: '水容积',
+                            type: 'bar',
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(0,191,183,1)',
+                                    borderColor: 'rgba(0,136,212,0.2)',
+                                    borderWidth: 12,
+                                    label: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                        position: 'insideTop',
+                                        formatter(p) {
+                                            return p.value > 0 ? p.value : ''
+                                        }
+                                    }
+                                }
+                            },
+                            data: [res.data.ots[0].watervol],
                         }
                     ]
                 });
@@ -338,13 +393,18 @@
         height: 330px;
     }
     
-    .divRight {
+    .divRight1 {
         border: 3px solid silver;
         border-radius: 4px;
-        height: 686px;
+        height: 330px;
         background-color: #344b58;
     }
-    
+    .divRight2 {
+        border: 3px solid silver;
+        border-radius: 4px;
+        height: 330px;
+        margin-top: 20px;
+    }
     .title {
         width: 100%;
         height: 60px;
@@ -374,7 +434,7 @@
     
     table {
         width: 90%;
-        margin: 10px 5%;
+        margin: 30px 5%;
     }
     
     table tr td {
@@ -383,20 +443,19 @@
     }
     
     table tr td {
-        width: 25%;
         height: 36px;
         line-height: 36px;
     }
     
     .components-container {
         width: 100%;
-        height: 650px;
+        height: 330px;
     }
     
     .chart-container {
         position: relative;
         width: 100%;
-        height:90%;
+        height:270px;
     }
 
 </style>

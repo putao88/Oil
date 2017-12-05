@@ -10,38 +10,41 @@
                     </el-form-item>
                     
                     <!--<el-form-item>-->
-                        <!--<el-date-picker-->
-                            <!--v-model="allTime"-->
-                            <!--type="datetimerange"-->
-                            <!--range-separator=" 至 "-->
-                            <!--start-placeholder="开始时间"-->
-                            <!--end-placeholder="结束时间"-->
-                            <!--placeholder="-&#45;&#45;请选择时间段-&#45;&#45;"-->
-                            <!--@change="timeChange">-->
-                        <!--</el-date-picker>-->
+                    <!--<el-date-picker-->
+                    <!--v-model="allTime"-->
+                    <!--type="datetimerange"-->
+                    <!--range-separator=" 至 "-->
+                    <!--start-placeholder="开始时间"-->
+                    <!--end-placeholder="结束时间"-->
+                    <!--placeholder="-&#45;&#45;请选择时间段-&#45;&#45;"-->
+                    <!--@change="timeChange">-->
+                    <!--</el-date-picker>-->
                     <!--</el-form-item>-->
                     
                     <el-form-item style="float:right;">
-                    <el-button type="primary" @click="handleAdd" icon="plus">新增油罐</el-button>
+                        <el-button type="primary" @click="handleAdd" icon="plus">新增油罐</el-button>
                     </el-form-item>
                 </el-form>
             </el-col>
         </el-row>
-    
+        
         <!--表格-->
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" width="55"></el-table-column>
             <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
-            <el-table-column prop="name" label="油罐名称" align="center"  min-width="120"></el-table-column>
+            <el-table-column prop="name" label="油罐名称" align="center" min-width="120"></el-table-column>
             <el-table-column prop="unitname" label="所属加油站" align="center" min-width="120"></el-table-column>
             <el-table-column prop="rtuid" label="RTU编号" align="center" sortable min-width="120"></el-table-column>
-            <el-table-column prop="wateruplim" label="水位上限(mm)" align="center" sortable min-width="160"></el-table-column>
+            <el-table-column prop="portNum" label="端口号" align="center" sortable min-width="120"></el-table-column>
+            <el-table-column prop="wateruplim" label="水位上限(mm)" align="center" sortable
+                             min-width="160"></el-table-column>
             <el-table-column prop="oiluplim" label="油位上限(mm)" align="center" sortable min-width="160"></el-table-column>
-            <el-table-column prop="oildownlim" label="油位下限(mm)" align="center" sortable  min-width="160"></el-table-column>
-            <el-table-column prop="time" label="时间" align="center" sortable min-width="170"></el-table-column>
+            <el-table-column prop="oildownlim" label="油位下限(mm)" align="center" sortable
+                             min-width="160"></el-table-column>
+            <!--<el-table-column prop="time" label="时间" align="center" sortable min-width="170"></el-table-column>-->
         </el-table>
-    
+        
         <!--分页工具条-->
         <!--工具条-->
         <el-col :span="24" class="toolbar">
@@ -55,7 +58,7 @@
                 :total="total" style="float:right">
             </el-pagination>
         </el-col>
-    
+        
         <!-- -----------------------编辑界面-------------------->
         <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
             <el-form :model="editForm" label-width="120px" :inline="true" :rules="editFormRules" ref="editForm">
@@ -65,26 +68,28 @@
                 <el-form-item label="rtu编号" prop="rtuid">
                     <el-input v-model="editForm.rtuid" :disabled=true></el-input>
                 </el-form-item>
+                <el-form-item label="端口号" prop="portNum">
+                    <el-input v-model="editForm.portNum" :disabled=true></el-input>
+                </el-form-item>
                 <el-form-item label="油罐名称" prop="name">
                     <el-input v-model="editForm.name"></el-input>
                 </el-form-item>
                 <el-form-item label="水位上限" prop="wateruplim">
                     <el-input v-model="editForm.wateruplim"></el-input>
                 </el-form-item>
-                <el-form-item label="油位下限" prop="oildownlim">
-                    <el-input v-model="editForm.oildownlim"></el-input>
-                </el-form-item>
                 <el-form-item label="油位上限" prop="oiluplim">
                     <el-input v-model="editForm.oiluplim"></el-input>
                 </el-form-item>
-        
+                <el-form-item label="油位下限" prop="oildownlim">
+                    <el-input v-model="editForm.oildownlim"></el-input>
+                </el-form-item>
             </el-form>
             <div slot="footer" class="dialog-footer">
                 <el-button @click.native="editFormVisible = false">取消</el-button>
                 <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading">提交</el-button>
             </div>
         </el-dialog>
-    
+        
         <!-- -----------------------设置油位界面-------------------->
         <el-dialog title="修改" v-model="setFormVisible" :close-on-click-modal="false">
             <el-form :model="setForm" label-width="120px" :inline="true" :rules="setFormRules" ref="setForm">
@@ -103,14 +108,26 @@
                 <el-button type="primary" @click.native="setSubmit('setForm')" :loading="setLoading">提交</el-button>
             </div>
         </el-dialog>
-    
+        
         <!-- -----------------------新增界面-------------------->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
-            <el-form :model="addForm" label-width="120px" :inline="true" :rules="addFormRules" ref="addForm">
+            <el-form :model="addForm" label-width="100px" :inline="true" :rules="addFormRules" ref="addForm">
                 <!--油罐选择-->
                 <el-form-item label="加油站/rtu" prop="gidArray">
                     <rtu-select @handleChangeChild="handleChange" :chang-selon="changSelon"></rtu-select>
                 </el-form-item>
+                
+                <el-form-item label="RTU端口" prop="portNum">
+                    <el-select v-model="addForm.portNum" filterable clearable placeholder="RTU端口">
+                        <el-option
+                            v-for="item in portOptions"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                        </el-option>
+                    </el-select>
+                </el-form-item>
+                
                 <el-form-item label="油罐名称" prop="name">
                     <el-input v-model="addForm.name"></el-input>
                 </el-form-item>
@@ -129,56 +146,56 @@
                 <el-button type="primary" @click.native="addSubmit('addForm')" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
-        
-        
+    
+    
     </div>
 </template>
 <script>
     import Axios from '../../util/fetch';
     import stationSelect from '../subItem/stationSelect.vue'
     import rtuSelect from '../subItem/rtuSelect.vue'
-    import { mapGetters } from 'vuex'
+    import {mapGetters} from 'vuex'
     export default{
-        components: {stationSelect,rtuSelect},//导入联动下拉子组件
+        components: {stationSelect, rtuSelect},//导入联动下拉子组件
         data(){
 //            检验输入的是否为数值
-            var filtNum = (rule, value, callback) =>{
+            var filtNum = (rule, value, callback) => {
                 if (value === '') {
                     callback(new Error('请设置限值'));
-                }else{
+                } else {
 //                    输入必须为非负浮点数，且小数点最多2位
-                    if(value.match(/^\+{0,1}\d+(\.\d{1,2})?$/)==null){
+                    if (value.match(/^\+{0,1}\d+(\.\d{1,2})?$/) == null) {
                         callback(new Error('请输入不超过2位小数的数字！'));
                     }
                     callback();
                 }
             };
-            var valueNum1=(rule, value, callback) =>{
-                if (this.editForm.oildownlim>this.editForm.oiluplim) {
+            var valueNum1 = (rule, value, callback) => {
+                if (parseFloat(this.editForm.oildownlim) > parseFloat(this.editForm.oiluplim)) {
                     callback(new Error('油位下限必须小于油位上限'));
                 }
-                else{
+                else {
                     callback();
                 }
             };
-            var valueNum2=(rule, value, callback) =>{
-                if (this.setForm.oildownlim>this.setForm.oiluplim) {
+            var valueNum2 = (rule, value, callback) => {
+                if (parseFloat(this.setForm.oildownlim) > parseFloat(this.setForm.oiluplim)) {
                     callback(new Error('油位下限必须小于油位上限'));
                 }
-                else{
+                else {
                     callback();
                 }
             };
-            var valueNum3=(rule, value, callback) =>{
-                if (this.addForm.oildownlim>this.addForm.oiluplim) {
+            var valueNum3 = (rule, value, callback) => {
+                if (parseFloat(this.addForm.oildownlim) > parseFloat(this.addForm.oiluplim)) {
                     callback(new Error('油位下限必须小于油位上限'));
                 }
-                else{
+                else {
                     callback();
                 }
             };
             return {
-                changSelon:false,//判断下拉子组件的选择是否可以任选层级
+                changSelon: false,//判断下拉子组件的选择是否可以任选层级
                 allTime: "",
                 listQuery: {//获取表格数据需要传的参数
                     gasId: "",
@@ -186,9 +203,9 @@
                     pageSize: 20,
                     start: "",
                     end: "",
-                    uid:""
+                    uid: ""
                 },
-                tableData:null,//表格数据
+                tableData: null,//表格数据
                 listLoading: false,//表格加载过程的等待
                 total: null,//总的数据条数
                 sels: [],//列表选中行
@@ -198,39 +215,40 @@
                 editFormRules: {   //编辑框的输入格式判断
                     name: [{required: true, message: '请输入加油站名称', trigger: 'blur'}],
                     oildownlim: [
-                        {validator:filtNum,trigger: 'blur'},
-                        {validator:valueNum1,trigger: 'blur'}
+                        {validator: filtNum, trigger: 'blur'},
+                        {validator: valueNum1, trigger: 'blur'}
                     ],
                     oiluplim: [
-                        {validator:filtNum,trigger: 'blur'},
-                        {validator:valueNum1,trigger: 'blur'}
+                        {validator: filtNum, trigger: 'blur'},
+                        {validator: valueNum1, trigger: 'blur'}
                     ],
-                    wateruplim: [{validator:filtNum,trigger: 'blur'}],
+                    wateruplim: [{validator: filtNum, trigger: 'blur'}],
                 },
                 //编辑界面数据
                 editForm: {
                     ids: '',
                     name: '',
-                    rtuid:'',
-                    unitname:'',
+                    rtuid: '',
+                    portNum: '',
+                    unitname: '',
                     oildownlim: '',
                     oiluplim: '',
-                    wateruplim:''
+                    wateruplim: ''
                 },
-               /* ---------------批量设置限位-------------- */
-                setFormVisible:false,
+                /* ---------------批量设置限位-------------- */
+                setFormVisible: false,
                 setLoading: false,//设置提交等待
                 setFormRules: {   //设置框的输入格式判断
                     name: [{required: true, message: '请输入加油站名称', trigger: 'blur'}],
                     oildownlim: [
-                        {validator:filtNum,trigger: 'blur'},
-                        {validator:valueNum2,trigger: 'blur'}
-                        ],
-                    oiluplim: [
-                        {validator:filtNum,trigger: 'blur'},
-                        {validator:valueNum2,trigger: 'blur'}
+                        {validator: filtNum, trigger: 'blur'},
+                        {validator: valueNum2, trigger: 'blur'}
                     ],
-                    wateruplim: [{validator:filtNum,trigger: 'blur'}],
+                    oiluplim: [
+                        {validator: filtNum, trigger: 'blur'},
+                        {validator: valueNum2, trigger: 'blur'}
+                    ],
+                    wateruplim: [{validator: filtNum, trigger: 'blur'}],
                 },
                 //设置界面数据
                 setForm: {
@@ -238,32 +256,38 @@
                     name: '',
                     oildownlim: '',
                     oiluplim: '',
-                    wateruplim:''
+                    wateruplim: ''
                 },
                 /*------------------新增-------------------*/
+                portOptions: [],//未绑定通道数据
                 addFormVisible: false,//新增界面是否显示
                 addLoading: false,//新增提交等待
                 addFormRules: {   //新增框的输入格式判断
-                    gidArray:[{type:'array',required: true, message: '请绑定RTU', trigger: 'change'}],
+                    gidArray: [{type: 'array', required: true, message: '请绑定RTU', trigger: 'change'}],
+                    portNum: [{type: 'number', required: true, message: '请选择端口', trigger: 'change'}],
                     name: [{required: true, message: '请输入加油站名称', trigger: 'blur'}],
                     oildownlim: [
-                        {validator:filtNum,trigger: 'blur'},
-                        {validator:valueNum3,trigger: 'blur'}
-                        ],
+                        {validator: filtNum, trigger: 'blur'},
+                        {validator: valueNum3, trigger: 'blur'}
+                    ],
                     oiluplim: [
-                        {validator:filtNum,trigger: 'blur'},
-                        {validator:valueNum3,trigger: 'blur'}
-                        ],
-                    wateruplim: [{validator:filtNum,trigger: 'blur'}],
+                        {validator: filtNum, trigger: 'blur'},
+                        {validator: valueNum3, trigger: 'blur'}
+                    ],
+                    wateruplim: [{validator: filtNum, trigger: 'blur'}],
                 },
                 //新增界面数据
                 addForm: {
-                    gidArray:[],
+                    gidArray: [],
+                    portNum: '',
                     name: '',
                     oildownlim: '',
                     oiluplim: '',
-                    wateruplim:'',
-                }
+                    wateruplim: '',
+                },
+                portQuery: {
+                    rid: '',
+                },
             }
         },
         computed: {
@@ -277,7 +301,7 @@
         methods: {
             //获得表格数据
             getList(){
-                this.listQuery.uid=this.uid;
+                this.listQuery.uid = this.uid;
                 this.listLoading = true;
                 Axios.get('selectOilTank.do', {
                     params: this.listQuery,
@@ -303,13 +327,34 @@
                 this.listQuery.curPage = val;
                 this.getList();
             },
+//            获得未绑定通道
+            getPort(){
+                Axios.get('rtuGas/selectOccupiedPort.do', {
+                    params: this.portQuery
+                })
+                    .then((res) => {
+                        for (let i = 0; i < res.data.length; i++) {
+                            const data = {
+                                value: res.data[i],
+                                label: "端口" + res.data[i]
+                            }
+                            this.portOptions.push(data);
+                        }
+                    })
+            },
             //        联动搜索改变时
             handleChange(value){
-                this.addForm.gidArray=value;
+                this.addForm.gidArray = value;
+                if (value != "") {
+                    this.portQuery.rid = value[1];
+                    this.getPort();
+                } else {
+                    this.addForm.portNum = "";
+                }
             },
 //            加油站改变时搜索
             stationChange(value){
-                this.listQuery.gasId=value;
+                this.listQuery.gasId = value;
                 this.handleFilter();
             },
             //            搜索筛选函数
@@ -334,12 +379,12 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.editLoading = true;
                             let para = Object.assign({}, this.editForm);
-                            let data={
-                                ids:para.ids,
-                                name:para.name,
-                                oildownlim:para.oildownlim,
-                                oiluplim:para.oiluplim,
-                                wateruplim:para.wateruplim
+                            let data = {
+                                ids: para.ids,
+                                name: para.name,
+                                oildownlim: para.oildownlim,
+                                oiluplim: para.oiluplim,
+                                wateruplim: para.wateruplim
                             }
                             Axios.post('updateOilTank.do', data)
                                 .then((res) => {
@@ -362,20 +407,20 @@
                 })
             },
 //            批量设置页面提交
-            setSubmit:function(formName){
+            setSubmit: function (formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.setLoading = true;
                             let para = Object.assign({}, this.setForm);
-                            let data={
-                                ids:para.ids,
-                                name:para.name,
-                                oildownlim:para.oildownlim,
-                                oiluplim:para.oiluplim,
-                                wateruplim:para.wateruplim
+                            let data = {
+                                ids: para.ids,
+                                name: para.name,
+                                oildownlim: para.oildownlim,
+                                oiluplim: para.oiluplim,
+                                wateruplim: para.wateruplim
                             }
-                            Axios.post('updateOilTank.do',data)
+                            Axios.post('updateOilTank.do', data)
                                 .then((res) => {
                                     this.setLoading = false;
                                     if (res.code == 0) {
@@ -396,27 +441,34 @@
                 })
             },
 //            修改加油站设置
-            updMessage:function (){
-                var item=this.sels.map(item => item)[0];//单个修改时需要用
+            updMessage: function () {
+                var item = this.sels.map(item => item)[0];//单个修改时需要用
                 var ids = this.sels.map(item => item.id);
-                if(ids.length<2){
+                if (ids.length < 2) {
                     this.editFormVisible = true;
                     this.editForm = Object.assign({}, item);
-                    this.editForm.ids=ids[0];
-                }else{
+                    this.editForm.ids = ids[0];
+                } else {
                     this.setFormVisible = true;
-                    this.setForm.ids= ids.toString();
+                    this.setForm = {
+                        ids: ids.toString(),
+                        name: '',
+                        oildownlim: '',
+                        oiluplim: '',
+                        wateruplim: ''
+                    }
                 }
             },
 //            显示新增页面
             handleAdd: function () {
                 this.addFormVisible = true;
                 this.addForm = {
-                    gidArray:[],
+                    gidArray: [],
                     name: '',
+                    portNum: '',
                     oildownlim: '',
                     oiluplim: '',
-                    wateruplim:'',
+                    wateruplim: '',
                 };
             },
             //            新增页面提交
@@ -426,15 +478,16 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.addLoading = true;
                             let para = Object.assign({}, this.addForm);
-                            const data={
-                                gid:para.gidArray[0],
-                                rid:para.gidArray[1],
-                                name:para.name,
-                                oildownlim:para.oildownlim,
-                                oiluplim:para.oiluplim,
-                                wateruplim:para.wateruplim,
+                            const data = {
+                                gid: para.gidArray[0],
+                                rid: para.gidArray[1],
+                                portNum: para.portNum,
+                                name: para.name,
+                                oildownlim: para.oildownlim,
+                                oiluplim: para.oiluplim,
+                                wateruplim: para.wateruplim,
                             }
-                            Axios.post('insertOilTank.do',data)
+                            Axios.post('insertOilTank.do', data)
                                 .then((res) => {
                                     this.addLoading = false;
                                     if (res.code == 0) {
@@ -462,9 +515,9 @@
                 })
                     .then(() => {
                         this.listLoading = true;
-                        const para={ids:ids};
+                        const para = {ids: ids};
                         Axios.get('deleteOilTank.do', {
-                            params:para
+                            params: para
                         })
                             .then((res) => {
                                 this.listLoading = false;

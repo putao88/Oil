@@ -48,12 +48,17 @@
                 const waterlevel = [];
                 const oillevel = [];
                 const temperature = [];
+                const oilvol=[];
+                const watervol=[];
                 for (let i = 0; i < chartsData.length; i++) {
                     xData.push(chartsData[i].time);
                     waterlevel.push(chartsData[i].waterlevel);
                     oillevel.push(chartsData[i].oillevel);
+                    oilvol.push(chartsData[i].oilvol);
+                    watervol.push(chartsData[i].watervol);
                     temperature.push(chartsData[i].temperature);
                 }
+                console.log(oilvol);
                 var dates = xData.map(function (item) {
                     return item[0];
                 });
@@ -107,7 +112,7 @@
                         textStyle: {
                             color: '#90979c'
                         },
-                        data: ['平均温度', '油位', '水位']
+                        data: ['平均温度', '油位','油容积', '水位','水容积']
                     },
                     calculable: true,
                     xAxis: [{
@@ -181,7 +186,8 @@
                         start: 1,
                         end: 35
                     }],
-                    series: [{
+                    series: [
+                        {
                         name: '平均温度',
                         type: 'line',
 //                        stack: '总量',
@@ -276,6 +282,53 @@
                             data: oillevel
                         },
                         {
+                            name: '油容积',
+                            type: 'line',
+//                            stack: '总量',
+                            barMaxWidth: 35,
+                            barGap: '10%',
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 5,
+                            showSymbol: false,
+                            lineStyle: {
+                                normal: {
+                                    width: 1
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                        offset: 0,
+                                        color: 'rgba(255,144,128, 0.3)'
+                                    }, {
+                                        offset: 0.8,
+                                        color: 'rgba(255,144,128, 0)'
+                                    }], false),
+                                    shadowColor: 'rgba(0, 0, 0, 0.1)',
+                                    shadowBlur: 10
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(255,144,128,1)',
+                                    borderColor: 'rgba(137,189,2,0.27)',
+                                    borderWidth: 12,
+                                    label: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                        position: 'insideTop',
+                                        formatter(p) {
+                                            return p.value > 0 ? p.value : ''
+                                        }
+                                    }
+                                }
+                            },
+                            data: oilvol
+                        },
+                        {
                             name: '水位',
                             type: 'line',
 //                            stack: '总量',
@@ -321,6 +374,53 @@
                                 }
                             },
                             data: waterlevel
+                        },
+                        {
+                            name: '水容积',
+                            type: 'line',
+//                            stack: '总量',
+                            barMaxWidth: 35,
+                            barGap: '10%',
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 5,
+                            showSymbol: false,
+                            lineStyle: {
+                                normal: {
+                                    width: 1
+                                }
+                            },
+                            areaStyle: {
+                                normal: {
+                                    color: new echarts.graphic.LinearGradient(0, 0, 0, 1, [{
+                                        offset: 0,
+                                        color: 'rgba(0,191,183, 0.3)'
+                                    }, {
+                                        offset: 0.8,
+                                        color: 'rgba(0,191,183, 0)'
+                                    }], false),
+                                    shadowColor: 'rgba(0, 0, 0, 0.1)',
+                                    shadowBlur: 10
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgba(0,191,183,1)',
+                                    borderColor: 'rgba(0,136,212,0.2)',
+                                    borderWidth: 12,
+                                    label: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                        position: 'insideTop',
+                                        formatter(p) {
+                                            return p.value > 0 ? p.value : ''
+                                        }
+                                    }
+                                }
+                            },
+                            data: watervol
                         }
                     ]
                 })

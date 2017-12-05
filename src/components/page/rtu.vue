@@ -63,6 +63,17 @@
     export default{
         components: {stationSelect},//导入联动下拉子组件
         data(){
+            var filtNum=(rule, value, callback) => {
+                if (value === '') {
+                    callback(new Error('请输入rtu编号'));
+                } else {
+//                    输入必须为非负浮点数，且小数点最多2位
+                    if (!(/^\d{8}$/.test(value))) {
+                        callback(new Error('请输入8位有效数字！'));
+                    }
+                    callback();
+                }
+            };
             return{
                 listQuery: {//获取表格数据需要传的参数
                     gasId: "",
@@ -80,7 +91,7 @@
                 addLoading: false,//新增提交等待
                 addFormRules: {   //新增框的输入格式判断
                     gid:[{type:'number',required: true, message: '请绑定加油站', trigger: 'change'}],
-                    rtuid: [{required: true, message: '请输入RTU编号', trigger: 'blur'}]
+                    rtuid: [{validator:filtNum, trigger: 'blur'}]
                 },
                 //新增界面数据
                 addForm: {

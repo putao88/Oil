@@ -112,7 +112,7 @@
                         textStyle: {
                             color: '#90979c'
                         },
-                        data: ['平均温度', '油位', '水位']
+                        data: ['平均温度', '油位', '油容积','水位','水容积']
                     },
                     calculable: true,
                     xAxis: [{
@@ -233,7 +233,73 @@
                             data: res.data.ots[0].oillevel
                         },
                         {
+                            name: '油容积',
+                            type: 'bar',
+                            barMaxWidth: 35,
+                            barGap: '10%',
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 5,
+                            showSymbol: false,
+                            lineStyle: {
+                                normal: {
+                                    width: 1
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgb(137,189,27)',
+                                    borderColor: 'rgba(137,189,2,0.27)',
+                                    borderWidth: 12,
+                                    label: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                        position: 'insideTop',
+                                        formatter(p) {
+                                            return p.value > 0 ? p.value : ''
+                                        }
+                                    }
+                                }
+                            },
+                            data: res.data.ots[0].oillevel
+                        },
+                        {
                             name: '水位',
+                            type: 'bar',
+                            barMaxWidth: 35,
+                            barGap: '10%',
+                            smooth: true,
+                            symbol: 'circle',
+                            symbolSize: 5,
+                            showSymbol: false,
+                            lineStyle: {
+                                normal: {
+                                    width: 1
+                                }
+                            },
+                            itemStyle: {
+                                normal: {
+                                    color: 'rgb(0,136,212)',
+                                    borderColor: 'rgba(0,136,212,0.2)',
+                                    borderWidth: 12,
+                                    label: {
+                                        show: true,
+                                        textStyle: {
+                                            color: '#fff'
+                                        },
+                                        position: 'insideTop',
+                                        formatter(p) {
+                                            return p.value > 0 ? p.value : ''
+                                        }
+                                    }
+                                }
+                            },
+                            data: res.data.ots[0].waterlevel
+                        },
+                        {
+                            name: '水容积',
                             type: 'bar',
                             barMaxWidth: 35,
                             barGap: '10%',
