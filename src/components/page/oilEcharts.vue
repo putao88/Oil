@@ -37,6 +37,7 @@
     import mixChart from '../subItem/mixChart.vue'
     import mixSelect from '../subItem/select.vue'
     import { mapGetters } from 'vuex'
+    import { UTCTime } from '../../filters/index';
     export default({
         components: {
             mixChart,mixSelect
@@ -83,8 +84,8 @@
             },
 //            时间段选择
             timeChange(){
-                this.listQuery.start = this.allTime[0];
-                this.listQuery.end = this.allTime[1];
+                this.listQuery.start = UTCTime(this.allTime[0]);
+                this.listQuery.end = UTCTime(this.allTime[1]);
                 if (this.listQuery.tid == "") {
                     this.$message({
                         message: '请选择油罐号',

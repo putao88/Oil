@@ -26,11 +26,15 @@
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" width="55" fixed></el-table-column>
-            <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
+            <el-table-column label="序号" align="center" width="66">
+                <template scope="scope">
+                    <span>{{(listQuery.curPage-1)*listQuery.pageSize+scope.$index+1}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="unitname" label="加油站名称" align="center" min-width="120"></el-table-column>
             <el-table-column prop="event" label="事件" align="center" min-width="140"></el-table-column>
-            <el-table-column prop="start" label="开始时间" align="center" min-width="170"></el-table-column>
-            <el-table-column prop="end" label="结束时间" align="center" min-width="170"></el-table-column>
+            <el-table-column prop="start" label="开始时间" align="center" sortable min-width="170"></el-table-column>
+            <el-table-column prop="end" label="结束时间" align="center" sortable min-width="170"></el-table-column>
             <el-table-column prop="beforelevel" label="进/出油前油位(mm)" align="center" min-width="180"></el-table-column>
             <el-table-column prop="afterlevel" label="进/出油后油位(mm)" align="center" min-width="180"></el-table-column>
             <el-table-column prop="change" label="进出油总量(L)" align="center" min-width="160"></el-table-column>
@@ -39,7 +43,8 @@
         <!--分页工具条-->
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+            <!--<el-button type="primary" @click="handleAdd" icon="plus">新增</el-button>-->
+            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0" icon="delete">删除</el-button>
             <el-pagination
                 @size-change="handleSizeChange" @current-change="handleCurrentChange"
                 :current-page.sync="listQuery.curPage" :page-sizes="[10, 15, 20, 30, 100]"
@@ -48,49 +53,6 @@
                 :total="total" style="float:right">
             </el-pagination>
         </el-col>
-        
-        <!--&lt;!&ndash; -&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;新增界面&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&#45;&ndash;&gt;-->
-        <!--<el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">-->
-        <!--<el-form :model="addForm" label-width="120px" :rules="addFormRules" ref="addForm" style="margin-right:30px;">-->
-        <!---->
-        <!--<el-form-item label="加油站" prop="gid">-->
-        <!--<station-select @handleChangeChild="stationChange"></station-select>-->
-        <!--</el-form-item>-->
-        <!---->
-        <!--<el-form-item label="开始时间" prop="start">-->
-        <!--<el-date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择进油开始时间"-->
-        <!--v-model="addForm.start">-->
-        <!--</el-date-picker>-->
-        <!--</el-form-item>-->
-        <!--&lt;!&ndash;结束时间&ndash;&gt;-->
-        <!--<el-form-item label="结束时间" prop="end">-->
-        <!--<el-date-picker type="datetime" format="yyyy-MM-dd HH:mm:ss" placeholder="选择进油结束时间"-->
-        <!--v-model="addForm.end">-->
-        <!--</el-date-picker>-->
-        <!--</el-form-item>-->
-        <!---->
-        <!--<el-form-item label="进油前油位" prop="beforelevel">-->
-        <!--<el-input v-model="addForm.beforelevel"></el-input>-->
-        <!--</el-form-item>-->
-        <!---->
-        <!--<el-form-item label="进油后油位" prop="afterlevel">-->
-        <!--<el-input v-model="addForm.afterlevel"></el-input>-->
-        <!--</el-form-item>-->
-        <!---->
-        <!--<el-form-item label="进油量" prop="change">-->
-        <!--<el-input v-model="addForm.change"></el-input>-->
-        <!--</el-form-item>-->
-        <!---->
-        <!--<el-form-item label="事件" prop="event">-->
-        <!--<el-input v-model="addForm.event"></el-input>-->
-        <!--</el-form-item>-->
-        <!---->
-        <!--</el-form>-->
-        <!--<div slot="footer" class="dialog-footer">-->
-        <!--<el-button @click.native="addFormVisible = false">取消</el-button>-->
-        <!--<el-button type="primary" @click.native="addSubmit('addForm')" :loading="addLoading">提交</el-button>-->
-        <!--</div>-->
-        <!--</el-dialog>-->
         
         <!-- -----------------------操作进出油界面-------------------->
         <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
@@ -167,7 +129,7 @@
                 changSelon1: false,//判断下拉子组件的选择是否可以任选层级
                 listQuery: {//获取表格数据需要传的参数
                     curPage: 1,
-                    pageSize: 15,
+                    pageSize: 10,
                     gasId: "",//加油站id
                     tid: "",//油罐id
                     start: "",

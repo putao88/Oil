@@ -15,8 +15,12 @@
         <!--表格-->
         
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
-                  element-loading-text="拼命加载中..." style="width: 100%">
-            <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
+                  element-loading-text="拼命加载中..." height="560" style="width: 100%">
+            <el-table-column label="序号" align="center" width="66">
+                <template scope="scope">
+                    <span>{{(listQuery.curPage-1)*listQuery.pageSize+scope.$index}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="name" label="油罐名称" align="center"  min-width="120"></el-table-column>
             <el-table-column prop="unitname" label="所属加油站" align="center" min-width="120"></el-table-column>
             <el-table-column prop="avgtemp" label="平均温度(℃)" align="center" sortable min-width="140"></el-table-column>
@@ -53,7 +57,7 @@
                 listQuery: {//获取表格数据需要传的参数
                     gasId: "",
                     curPage: 1,
-                    pageSize: 20,
+                    pageSize: 10,
                     start: "",
                     end: "",
                     uid:""

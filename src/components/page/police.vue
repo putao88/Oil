@@ -28,7 +28,11 @@
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" fixed width="55"></el-table-column>
-            <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
+            <el-table-column label="序号" align="center" width="66">
+                <template scope="scope">
+                    <span>{{(listQuery.curPage-1)*listQuery.pageSize+scope.$index+1}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="unitname" label="所属加油站" align="center" min-width="120"></el-table-column>
             <el-table-column prop="comment" label="报警描述" align="center" min-width="160"></el-table-column>
             <el-table-column prop="event" label="报警事件" align="center" min-width="120"></el-table-column>
@@ -49,7 +53,7 @@
         <!--分页工具条-->
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0" icon="delete">删除</el-button>
             <el-pagination
                 @size-change="handleSizeChange" @current-change="handleCurrentChange"
                 :current-page.sync="listQuery.curPage" :page-sizes="[10, 15, 20, 30, 100]"

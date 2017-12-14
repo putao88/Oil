@@ -8,6 +8,7 @@ import router from "../router/index";
 
 const Axios = axios.create({
     baseURL: "/api", // 因为我本地做了反向代理.api指代GAS_New
+    // baseURL: "/GAS_New",
     timeout: 10000,
     responseType: "json",
     withCredentials: true, // 是否允许带cookie这些

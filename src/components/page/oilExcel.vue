@@ -22,7 +22,7 @@
                     </el-form-item>
                     <!--导出-->
                     <el-form-item  style="float:right;">
-                    <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
+                        <el-button class="filter-item" type="primary" icon="document" @click="handleDownload">导出</el-button>
                     </el-form-item>
                 
                 </el-form>
@@ -34,7 +34,11 @@
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
                   element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" fixed align="center" width="55"></el-table-column>
-            <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
+            <el-table-column label="序号" align="center" width="66">
+                <template scope="scope">
+                    <span>{{(listQuery.curPage-1)*listQuery.pageSize+scope.$index+1}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="unitname" label="加油站名称" align="center" min-width="120"></el-table-column>
             <el-table-column prop="name" label="油罐名称" align="center" min-width="100"></el-table-column>
             <el-table-column prop="avgtemp" label="平均温度(℃)" align="center" sortable min-width="140"></el-table-column>
@@ -53,7 +57,7 @@
         <!--分页工具条-->
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0" icon="delete">删除</el-button>
             <el-pagination
                 @size-change="handleSizeChange" @current-change="handleCurrentChange"
                 :current-page.sync="listQuery.curPage" :page-sizes="[10, 15, 20, 30, 100]"
@@ -67,6 +71,7 @@
 <script>
     import mixSelect from '../subItem/select.vue'
     import Axios from '../../util/fetch';
+    import { UTCTime } from '../../filters/index';
     import { mapGetters } from 'vuex'
     export default{
         components: {mixSelect},//导入联动下拉子组件
@@ -76,7 +81,7 @@
                 allTime: "",//时间段
                 listQuery: {//获取历史数据需要传的参数
                     curPage: 1,
-                    pageSize: 15,
+                    pageSize: 10,
                     gasId: "",//加油站id
                     tid: "",//油罐id
                     start: "",
@@ -168,8 +173,8 @@
             },
 //            时间段选择改变
             timeChange(){
-                this.listQuery.start = this.allTime[0];
-                this.listQuery.end = this.allTime[1];
+                this.listQuery.start = UTCTime(this.allTime[0]);
+                this.listQuery.end = UTCTime(this.allTime[1]);
                 this.handleFilter();
             },
             //            选中行

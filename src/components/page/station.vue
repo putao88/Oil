@@ -48,27 +48,33 @@
         <!--表格-->
         
         <el-table :data="tableData" stripe highlight-current-row border v-loading="listLoading"
-                  element-loading-text="拼命加载中..." @selection-change="selsChange" style="width: 100%">
+                  element-loading-text="拼命加载中..." @selection-change="selsChange" height="560" style="width: 100%">
             <el-table-column type="selection" align="center" width="55"></el-table-column>
-            <el-table-column type="index" label="序号" align="center" width="66"></el-table-column>
+            <el-table-column label="序号" align="center" width="66">
+                <template scope="scope">
+                    <span>{{(listQuery.curPage-1)*listQuery.pageSize+scope.$index+1}}</span>
+                </template>
+            </el-table-column>
             <el-table-column prop="unitname" label="名称" align="center" sortable min-width="120"></el-table-column>
             <el-table-column prop="principal" label="负责人" align="center" sortable min-width="100"></el-table-column>
             <el-table-column prop="phone" label="联系电话" align="center" sortable min-width="130"></el-table-column>
             <el-table-column prop="email" label="邮箱" align="center" sortable min-width="200"></el-table-column>
             <el-table-column prop="createTime" label="创建时间" align="center" sortable min-width="180"></el-table-column>
             <el-table-column prop="address" label="单位地址" align="center" sortable min-width="180"></el-table-column>
-            <el-table-column label="操作" align="center"  min-width="140">
-                <template scope="scope">
-                    <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
-                    <el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>
-                </template>
-            </el-table-column>
+            <!--<el-table-column label="操作" align="center"  min-width="140">-->
+                <!--<template scope="scope">-->
+                    <!--<el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>-->
+                    <!--<el-button type="danger" size="small" @click="handleDel(scope.$index, scope.row)">删除</el-button>-->
+                <!--</template>-->
+            <!--</el-table-column>-->
         </el-table>
         
         <!--分页工具条-->
         <!--工具条-->
         <el-col :span="24" class="toolbar">
-            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0">批量删除</el-button>
+            <!--<el-button type="primary" @click="handleAdd" icon="plus">新增</el-button>-->
+            <el-button type="primary" @click="handleEdit" :disabled="this.sels.length===0" icon="edit">修改</el-button>
+            <el-button type="danger" @click="batchRemove" :disabled="this.sels.length===0" icon="delete">删除</el-button>
             <el-pagination
                 @size-change="handleSizeChange" @current-change="handleCurrentChange"
                 :current-page.sync="listQuery.curPage" :page-sizes="[10, 15, 20, 30, 100]"
@@ -79,7 +85,7 @@
         </el-col>
         
         <!-- -----------------------编辑界面-------------------->
-        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false">
+        <el-dialog title="编辑" v-model="editFormVisible" :close-on-click-modal="false" :before-close="closeEdit">
             <el-form :model="editForm" label-width="120px" :inline="true" :rules="editFormRules" ref="editForm">
                 <el-form-item label="加油站名称" prop="unitname">
                     <el-input v-model="editForm.unitname"></el-input>
@@ -103,13 +109,13 @@
             
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click.native="editFormVisible = false">取消</el-button>
+                <el-button @click.native="cancelEdit">取消</el-button>
                 <el-button type="primary" @click.native="editSubmit('editForm')" :loading="editLoading">提交</el-button>
             </div>
         </el-dialog>
         
         <!-- -----------------------新增界面-------------------->
-        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false">
+        <el-dialog title="新增" v-model="addFormVisible" :close-on-click-modal="false" :before-close="closeAdd">
             <el-form :model="addForm" label-width="120px" :inline="true" :rules="addFormRules" ref="addForm">
                 <el-form-item label="加油站名称" prop="unitname">
                     <el-input v-model="addForm.unitname"></el-input>
@@ -133,7 +139,7 @@
             
             </el-form>
             <div slot="footer" class="dialog-footer">
-                <el-button @click.native="addFormVisible = false">取消</el-button>
+                <el-button @click.native="cancelAdd">取消</el-button>
                 <el-button type="primary" @click.native="addSubmit('addForm')" :loading="addLoading">提交</el-button>
             </div>
         </el-dialog>
@@ -142,7 +148,8 @@
 </template>
 <script>
     import Axios from '../../util/fetch';
-    import { mapGetters } from 'vuex'
+    import { mapGetters } from 'vuex';
+    import { UTCTime } from '../../filters/index';
     export default {
         data() {
             return {
@@ -151,7 +158,7 @@
                 listQuery: {//获取表格数据需要传的参数
                     gname: "",
                     curPage: 1,
-                    pageSize: 20,
+                    pageSize: 10,
                     start: "",
                     end: "",
                     uid: ""
@@ -243,18 +250,33 @@
             },
 //            时间段选择改变
             timeChange(){
-                this.listQuery.start=this.allTime[0];
-                this.listQuery.end=this.allTime[1];
+                this.listQuery.start = UTCTime(this.allTime[0]);
+                this.listQuery.end = UTCTime(this.allTime[1]);
                 this.handleFilter();
             },
 //            选中行
             selsChange: function (sels) {
                 this.sels = sels;
             },
+//            //显示编辑界面
+//            handleEdit: function (index, row) {
+//                this.editFormVisible = true;
+//                this.editForm = Object.assign({}, row);
+//            },
             //显示编辑界面
-            handleEdit: function (index, row) {
-                this.editFormVisible = true;
-                this.editForm = Object.assign({}, row);
+            handleEdit: function () {
+                var item = this.sels.map(item => item)[0];//单个修改时需要用
+                var ids = this.sels.map(item => item.id);
+                if (ids.length < 2) {
+                    this.editFormVisible = true;
+                    this.editForm = Object.assign({}, item);
+                    this.editForm.ids = ids[0];
+                } else {
+                    this.$message({
+                        message: "一次只能修改一条数据！",
+                        type: 'error'
+                    });
+                }
             },
 //            编辑页面提交
             editSubmit: function (formName) {
@@ -295,14 +317,6 @@
 //            显示新增页面
             handleAdd: function () {
                 this.addFormVisible = true;
-                this.addForm = {
-                    unitname: '',
-                    principal: '',
-                    phone: '',
-                    email: '',
-                    address: '',
-                    uid:this.uid
-                };
             },
 //            新增页面提交
             addSubmit: function (formName) {
@@ -312,14 +326,6 @@
                         this.$confirm('确认提交吗？', '提示', {}).then(() => {
                             this.addLoading = true;
                             let para = Object.assign({}, this.addForm);
-//                            const data = qs.stringify({
-//                                id:para.id,
-//                                unitname:para.unitname,
-//                                principal:para.phone,
-//                                phone:para.phone,
-//                                email:para.email,
-//                                address:para.address
-//                            });
                             Axios.post('insertGas.do', para)
                                 .then((res) => {
                                     this.addLoading = false;
@@ -397,7 +403,28 @@
                                 this.listLoading = false;
                             })
                     })
-            }
+            },
+            //            取消新增/**/
+            cancelAdd:function(){
+//            消除表单的验证格式
+                this.$refs['addForm'].resetFields();
+                this.addFormVisible=false;
+            },
+            //            取消编辑
+            cancelEdit:function(){
+                this.$refs['editForm'].resetFields();
+                this.editFormVisible=false;
+            },
+//            关闭对话框时，重置验证
+            closeAdd:function(done){
+//                done用于关闭弹窗
+                done();
+                this.$refs['addForm'].resetFields();
+            },
+            closeEdit:function(done){
+                done();
+                this.$refs['editForm'].resetFields();
+            },
         }
     }
 </script>
